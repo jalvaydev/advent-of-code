@@ -7,7 +7,10 @@ import (
 )
 
 func TestFindTopCalorieElf(t *testing.T) {
-	got := day1.FindTopCalorieElf("./input_test")
+	got, err := day1.FindTopCalorieElf("./input_test")
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
 	want := 24000
 	if got != want {
 		t.Errorf("Expected %v, got %v", want, got)
@@ -15,7 +18,10 @@ func TestFindTopCalorieElf(t *testing.T) {
 }
 
 func TestFindTopKCalorieElves(t *testing.T) {
-	got := day1.FindTopKCalorieElves("./input_test", 3)
+	got, err := day1.FindTopKCalorieElves("./input_test", 3)
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
 	want := 45000
 	if got != want {
 		t.Errorf("Expected %v, got %v", want, got)

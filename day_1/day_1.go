@@ -2,17 +2,16 @@ package day1
 
 import (
 	"container/heap"
-	"fmt"
 	"math"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func FindTopCalorieElf(path string) int {
+func FindTopCalorieElf(path string) (int, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Println(err)
+		return -1, err
 	}
 
 	dataString := string(data)
@@ -30,13 +29,13 @@ func FindTopCalorieElf(path string) int {
 		maxCalories = int(math.Max(float64(maxCalories), float64(counter)))
 	}
 
-	return maxCalories
+	return maxCalories, nil
 }
 
-func FindTopKCalorieElves(path string, k int) int {
+func FindTopKCalorieElves(path string, k int) (int, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Println(err)
+		return -1, err
 	}
 
 	dataString := string(data)
@@ -44,6 +43,8 @@ func FindTopKCalorieElves(path string, k int) int {
 
 	h := &IntHeap{}
 	heap.Init(h)
+
+	sum := 0
 
 	for _, v := range calorieData {
 		vals := strings.Fields(v)
@@ -55,18 +56,15 @@ func FindTopKCalorieElves(path string, k int) int {
 
 		if h.Len() < k {
 			heap.Push(h, counter)
+			sum += counter
 		} else {
 			if (*h)[0] < counter {
-				heap.Pop(h)
+				sum -= heap.Pop(h).(int)
 				heap.Push(h, counter)
+				sum += counter
 			}
 		}
 	}
 
-	sum := 0
-	for _, v := range *h {
-		sum += v
-	}
-
-	return sum
+	return sum, nil
 }
